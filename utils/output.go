@@ -43,7 +43,10 @@ func GatherColorStrings(picker cli.PickerCommand) (ColorStrings, error) {
 	COLORrgba := fmt.Sprintf("rgba(%v, %v, %v, %v)", _rgba.R, _rgba.G, _rgba.B, "0.5")
 	COLORoklab := fmt.Sprintf("oklab(%v%% %v %v)", roundFloat(_oklab.L*100, 2), roundFloat(_oklab.A, 4), roundFloat(_oklab.B, 4))
 	COLORoklch := fmt.Sprintf("oklch(%v%% %v%% %vdeg)", roundFloat(_oklch.L*100, 2), roundFloat(_oklch.C*250, 2), roundFloat(radToDeg(_oklch.H), 1))
-	COLORclosestNamed, _ := findClosestDistanceInRgbSpace(_rgb)
+	COLORclosestNamed, err := findClosestDistanceInRgbSpace(_rgb)
+	if err != nil {
+		return ColorStrings{}, err
+	}
 	return ColorStrings{
 		HEX:          COLORhex,
 		RGB:          COLORrgb,
