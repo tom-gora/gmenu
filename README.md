@@ -1,6 +1,8 @@
 # rofi-quick-colors
 
-A command-line backend built in go specifically to pick colors using a color picker on linux (like default `hyprpicker`) and output them preformatted for easy use in CSS or other applications. Formats:
+A command-line backend built in go specifically to pick colors using a color picker on linux (like default `hyprpicker`) and output them preformatted for easy use in CSS or other applications.  
+Intended to feed dmenu | fzf and other pickers like that.
+Formats:
 
 - HEX
 - RGB
