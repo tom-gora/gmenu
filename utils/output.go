@@ -57,7 +57,8 @@ func GatherColorStrings(conf cli.Conf) (ColorStrings, error) {
 }
 
 func DrawTmpThumbnail(hex string) error {
-	img := image.NewRGBA(image.Rect(0, 0, 5, 5))
+	s := 5
+	img := image.NewRGBA(image.Rect(0, 0, s, s))
 	rgb, err := hexToRgb(hex)
 	if err != nil {
 		return err
@@ -70,7 +71,7 @@ func DrawTmpThumbnail(hex string) error {
 		img.Pix[i+3] = 255
 	}
 
-	tempPath := "/tmp/color_thumb.png"
+	tempPath := fmt.Sprintf("%s/color_thumb.png", os.TempDir())
 
 	f, err := os.Create(tempPath)
 	if err != nil {

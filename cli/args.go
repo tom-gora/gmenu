@@ -24,8 +24,8 @@ var (
 )
 
 type Conf struct {
-	Picker    PickerCommand
-	DrawThumb bool
+	Picker    *PickerCommand
+	DrawThumb *bool
 }
 
 func ParseArgs() (*Conf, error) {
@@ -57,9 +57,9 @@ func ParseArgs() (*Conf, error) {
 	picker.Cmd = parts[0]
 	picker.Args = parts[1:]
 
-	cfg.Picker = *picker
+	cfg.Picker = picker
 	if isThumbnailRequired {
-		cfg.DrawThumb = true
+		cfg.DrawThumb = &isThumbnailRequired
 	}
 
 	return cfg, nil
