@@ -19,10 +19,12 @@ func main() {
 		fmt.Printf("Error collecting color strings: %v", err)
 		os.Exit(1)
 	}
-	err = u.WriteTmpThumbnail(colorStrings.HEX)
-	if err != nil {
-		fmt.Printf("Error writing thumbnail: %v", err)
-		os.Exit(1)
+	if conf.DrawThumb {
+		err = u.DrawTmpThumbnail(colorStrings.HEX)
+		if err != nil {
+			fmt.Printf("Error writing thumbnail: %v", err)
+			os.Exit(1)
+		}
 	}
 
 	u.OutputAsLines(colorStrings)

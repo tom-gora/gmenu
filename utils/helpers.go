@@ -4,7 +4,6 @@ package utils
 import (
 	"bufio"
 	"bytes"
-	"errors"
 	"fmt"
 	"math"
 	"os"
@@ -20,7 +19,7 @@ func roundFloat(val float64, precision int) float64 {
 	return rounded / shift
 }
 
-func ensureValidHexColor(out string) (string, error) {
+func ensureValidHexColor(out string) string {
 	pattern := regexp.MustCompile(`#([A-Fa-f0-9]{6})`)
 	scanner := bufio.NewScanner(strings.NewReader(out))
 
@@ -28,15 +27,15 @@ func ensureValidHexColor(out string) (string, error) {
 		lineText := scanner.Text()
 		matches := pattern.FindAllStringSubmatch(lineText, -1)
 		if len(matches) > 0 && len(matches[0]) > 1 {
-			return matches[0][0], nil
+			return matches[0][0]
 		}
 	}
 
 	if scanner.Err() != nil {
-		return "", scanner.Err()
+		return ""
 	}
 
-	return "", errors.New("No valid hex color code found in output")
+	return ""
 }
 
 func captureColorFromPicker(p cli.PickerCommand) (string, error) {
@@ -52,15 +51,15 @@ func captureColorFromPicker(p cli.PickerCommand) (string, error) {
 		return "", err
 	}
 	outstring := stdout.String()
-	if outstring == "" {
+
+	// || strings.Contains(strings.ToLower(outstring), "null") {
+
+	validatedHex := ensureValidHexColor(outstring)
+
+	if validatedHex == "" {
 		fmt.Println("Cancelled by user")
 		os.Exit(130)
 	}
 
-	validHex, err := ensureValidHexColor(outstring)
-	if err != nil {
-		return "", err
-	}
-
-	return validHex, nil
+	return validatedHex, nil
 }

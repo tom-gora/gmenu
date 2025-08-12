@@ -18,10 +18,14 @@ type PickerCommand struct {
 	Args []string
 }
 
-var passedPickerCmdString string
+var (
+	passedPickerCmdString string
+	isThumbnailRequired   bool
+)
 
 type Conf struct {
-	Picker PickerCommand
+	Picker    PickerCommand
+	DrawThumb bool
 }
 
 func ParseArgs() (*Conf, error) {
@@ -37,8 +41,10 @@ func ParseArgs() (*Conf, error) {
 		tbl.Print()
 	}
 
-	flag.StringVar(&passedPickerCmdString, "p", "hyprpicker -n -f hex", "Command to use to call picker that must return hex color value to stdout.")
-	flag.StringVar(&passedPickerCmdString, "picker-command", "hyprpicker -n -f hex", "Command to use to call picker that must return hex color value to stdout.")
+	flag.StringVar(&passedPickerCmdString, "p", "hyprpicker -n -f hex", "Command to use to call picker that must return hex color value to stdout. [string]")
+	flag.StringVar(&passedPickerCmdString, "picker-command", "hyprpicker -n -f hex", "Command to use to call picker that must return hex color value to stdout. [string]")
+	flag.BoolVar(&isThumbnailRequired, "d", true, "Should a temporarty PNG thumbnail filled with picked color be created in /tmp [boolean]")
+	flag.BoolVar(&isThumbnailRequired, "draw-thumbnail", true, "Should a temporarty PNG thumbnail filled with picked color be created in /tmp [boolean]")
 
 	if passedPickerCmdString == "" {
 		flag.Usage()
@@ -52,6 +58,9 @@ func ParseArgs() (*Conf, error) {
 	picker.Args = parts[1:]
 
 	cfg.Picker = *picker
+	if isThumbnailRequired {
+		cfg.DrawThumb = true
+	}
 
 	return cfg, nil
 }

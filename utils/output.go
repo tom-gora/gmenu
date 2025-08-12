@@ -56,8 +56,8 @@ func GatherColorStrings(conf cli.Conf) (ColorStrings, error) {
 	}, nil
 }
 
-func WriteTmpThumbnail(hex string) error {
-	img := image.NewRGBA(image.Rect(0, 0, 50, 50))
+func DrawTmpThumbnail(hex string) error {
+	img := image.NewRGBA(image.Rect(0, 0, 5, 5))
 	rgb, err := hexToRgb(hex)
 	if err != nil {
 		return err
