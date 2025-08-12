@@ -21,8 +21,8 @@ type ColorStrings struct {
 	ClosestNamed string
 }
 
-func GatherColorStrings(conf cli.Conf) (ColorStrings, error) {
-	COLORhex, err := captureColorFromPicker(conf.Picker)
+func GatherColorStrings(picker cli.PickerCommand) (ColorStrings, error) {
+	COLORhex, err := captureColorFromPicker(picker)
 	if err != nil {
 		return ColorStrings{}, err
 	}
