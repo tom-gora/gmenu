@@ -13,6 +13,13 @@ Formats:
 - OKLCH
 - Closest named color
 
+## Installation
+
+1.  Ensure you have Go installed.
+2.  Run `go build ./cmd/rofiQuickColors` to build the executable.
+3.  Move the `rofiQuickColors` executable to a directory in your system's PATH, or to any other location you prefer, so that your picker can call it.
+
+
 ## Usage
 
 1. run rofiQuickColors
