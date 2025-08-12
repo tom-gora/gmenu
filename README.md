@@ -1,7 +1,7 @@
 # rofi-quick-colors
 
 A command-line backend built in go specifically to pick colors using a color picker on linux (like default `hyprpicker`) and output them preformatted for easy use in CSS or other applications.  
-Intended to feed dmenu | fzf and other pickers like that.  
+Intended to feed dmenu | fzf and other fuzzy pickers like that.  
 
 Formats:
 - HEX
@@ -18,7 +18,7 @@ Formats:
 1.  Ensure you have Go installed.
 2.  Clone this repo `git clone https://github.com/tom-gora/rofiQuickColors.git && cd rofiQuickColors`
 3.  Run `go build ./cmd/rofiQuickColors` to build the executable.
-4.  Move the `rofiQuickColors` executable to a directory in your system's PATH, or to any other location you prefer, so that your picker can call it.
+4.  Move the `rofiQuickColors` executable to a directory in your system's PATH, or to any other location you prefer, so that your menu application can call it.
 
 
 ## Usage
@@ -27,7 +27,7 @@ Formats:
 2. Provide optional arguments:
 
 - [ -p | --picker-command ] STRING  
-  Command to use to call picker that must return hex color value to stdout.  
+  Command to use to call color picker that must return hex color value to stdout.  
   DEFAULT: "hyprpicker -n -f hex"
 
 - [ -d | --draw-thumbnail] BOOLEAN  
