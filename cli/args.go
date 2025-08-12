@@ -33,11 +33,13 @@ func ParseArgs() (*Conf, error) {
 	cfg := &Conf{}
 
 	flag.Usage = func() {
-		headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
+		headerFmt := color.New(color.FgBlue, color.Underline).SprintfFunc()
 		fmt.Fprintf(os.Stderr, "\n%s\n\n", headerFmt("Usage of %s:", os.Args[0]))
 		tbl := table.New("Flag", "Type", "Description", "Default")
-		tbl.WithHeaderFormatter(color.New(color.FgYellow).SprintfFunc())
-		tbl.AddRow("-p, --picker-command", "string", "Command to use to call picker that must return hex color value to stdout.", "(default: hyprpicker)")
+		tbl.WithHeaderFormatter(color.New(color.FgCyan).SprintfFunc())
+		tbl.AddRow("-h, --help", "boolean", "Print this message.", "")
+		tbl.AddRow("-p, --picker-command", "string", "Command to use to call picker that must return hex color value to stdout.", "hyprpicker -n -f hex")
+		tbl.AddRow("-d, --draw-thumbnail", "boolean", "Should a temporarty PNG thumbnail filled with picked color be created in /tmp/color_thumb.png", "true")
 		tbl.Print()
 	}
 
