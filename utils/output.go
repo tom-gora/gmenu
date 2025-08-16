@@ -21,8 +21,8 @@ type ColorStrings struct {
 	ClosestNamed string
 }
 
-func GatherColorStrings(picker cli.PickerCommand) (ColorStrings, error) {
-	COLORhex, err := captureColorFromPicker(picker)
+func GatherColorStrings(p cli.PickConf) (ColorStrings, error) {
+	COLORhex, err := captureColorFromPicker(p)
 	if err != nil {
 		return ColorStrings{}, err
 	}
@@ -100,3 +100,9 @@ func OutputAsLines(colorStrings ColorStrings) {
 func outputAsJsonArr() {}
 
 func outputAsJsonObj() {}
+
+func OutputShadesAndTints(shadesAndTints []string) {
+	for _, v := range shadesAndTints {
+		fmt.Printf("%v\n", v)
+	}
+}

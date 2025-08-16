@@ -14,12 +14,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	colorStrings, err := u.GatherColorStrings(*conf.Picker)
+	colorStrings, err := u.GatherColorStrings(*conf.PickConf)
 	if err != nil {
 		fmt.Printf("Error collecting color strings: %v", err)
 		os.Exit(1)
 	}
-	if *conf.DrawThumb {
+	if *conf.PickConf.DrawThumb {
 		err = u.DrawTmpThumbnail(colorStrings.HEX)
 		if err != nil {
 			fmt.Printf("Error writing thumbnail: %v", err)

@@ -38,9 +38,9 @@ func ensureValidHexColor(out string) string {
 	return ""
 }
 
-func captureColorFromPicker(p cli.PickerCommand) (string, error) {
-	pickerCmd := p.Cmd
-	pickerArgs := p.Args
+func captureColorFromPicker(p cli.PickConf) (string, error) {
+	pickerCmd := p.Picker.Cmd
+	pickerArgs := p.Picker.Args
 	execPicker := exec.Command(pickerCmd, pickerArgs...)
 	var stdout bytes.Buffer
 
