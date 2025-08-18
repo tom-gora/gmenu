@@ -1,4 +1,4 @@
-module rofiQuickColors
+module gmenu
 
 go 1.24.5
 

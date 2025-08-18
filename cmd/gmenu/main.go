@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"gmenu/cli"
+	gcolors "gmenu/internal/gmenu_colors"
 	"os"
-	"rofiQuickColors/cli"
-	u "rofiQuickColors/utils"
 )
 
 func main() {
@@ -14,18 +14,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	colorStrings, err := u.GatherColorStrings(*conf.PickConf)
+	colorStrings, err := gcolors.GatherColorStrings(*conf.PickConf)
 	if err != nil {
 		fmt.Printf("Error collecting color strings: %v", err)
 		os.Exit(1)
 	}
 	if *conf.PickConf.DrawThumb {
-		err = u.DrawTmpThumbnail(colorStrings.HEX)
+		err = gcolors.DrawTmpThumbnail(colorStrings.HEX)
 		if err != nil {
 			fmt.Printf("Error writing thumbnail: %v", err)
 			os.Exit(1)
 		}
 	}
 
-	u.OutputAsLines(colorStrings)
+	gcolors.OutputAsLines(colorStrings)
 }

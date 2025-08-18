@@ -1,4 +1,4 @@
-package utils
+package gcolors
 
 import (
 	"bufio"
@@ -71,9 +71,9 @@ func GetLastColorFromClipboard() (string, error) {
 				hex := colorconv.RGBToHex(r, g, b)
 				return strings.ReplaceAll(hex, "0x", "#"), nil
 			default:
-				return "", errors.New("No color / unsupported color format found in clipboard")
+				return "", errors.New("no color / unsupported color format found in clipboard")
 			}
 		}
 	}
-	return "", errors.New("No color / unsupported color format found in clipboard")
+	return "", errors.New("no color / unsupported color format found in clipboard")
 }

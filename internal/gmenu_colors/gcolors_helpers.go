@@ -1,15 +1,15 @@
-// Package utils
-package utils
+// Package colors
+package gcolors
 
 import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"gmenu/cli"
 	"math"
 	"os"
 	"os/exec"
 	"regexp"
-	"rofiQuickColors/cli"
 	"strings"
 )
 

@@ -1,4 +1,4 @@
-package utils
+package gcolors
 
 import (
 	_ "embed"
@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-//go:embed colors.json
+//go:embed data/colors_named.json
 var colorsData string
 
 type ColorKvPair struct {

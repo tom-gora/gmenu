@@ -1,11 +1,11 @@
-package utils
+package gcolors
 
 import (
 	"fmt"
+	"gmenu/cli"
 	"image"
 	"image/png"
 	"os"
-	"rofiQuickColors/cli"
 
 	"github.com/alltom/oklab"
 )

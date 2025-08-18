@@ -1,5 +1,18 @@
-# rofi-quick-colors
+# GMENU
 
+
+---
+### WIP
+
+<p style="font-weight: bold; padding-left: 1rem; padding-right: 8rem; text-align:justify;">
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I decided to rename what was just a color backend and fold it into one single binary comprehensive general purpose backend outputting data as lines for any picker capable of handling it (like dmenu, rofi, wofi, tofi, otherofi, walker, runner, crawler, swimmer and anything else under the sun that can fuzilly match lines).
+    </p>
+⚠️ 🚧 🔨 ⚠️ 🚧 🔨 ⚠️ 🚧 🔨 ⚠️ 🚧 🔨 ⚠️ 🚧 🔨 ⚠️ 🚧 🔨 ⚠️ 🚧 🔨 ⚠️ 🚧 🔨 ⚠️ 🚧 🔨 ⚠️ 🚧 🔨 
+  
+
+
+<small style="font-weight: normal; font-size: 0.8rem;">Previous: README below. New things to come...</small>
+---
 A command-line backend built in go specifically to pick colors using a color picker on linux (like default `hyprpicker`) and output them preformatted for easy use in CSS or other applications.  
 Intended to feed dmenu | fzf and other fuzzy pickers like that.  
 
