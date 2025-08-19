@@ -5,6 +5,15 @@ type Conf struct {
 	PickConf    *PickConf
 	ShadesConf  *ShadesConf
 	PaletteConf *PaletteConf
+	MenuConf    *MenuConf
+}
+
+// MenuConf - config struct for menu subcommand
+type MenuConf struct {
+	MenuConfPath *string
+	Result       *string
+	DefaultExec  *string
+	IsJoin       *bool
 }
 
 // PickConf - config struct for pick subcommand
@@ -23,10 +32,6 @@ type ShadesConf struct {
 type PaletteConf struct {
 	Picker  *PickerCommand
 	ClipMan *ClipManCommand
-}
-
-type MenuConf struct {
-	MenuConfPath *string
 }
 
 // PickerCommand - color picker command

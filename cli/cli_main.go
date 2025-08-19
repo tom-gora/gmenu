@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/fatih/color"
@@ -24,6 +25,7 @@ func ParseArgs() (*Conf, error) {
 	pickSubcmd.Usage = pickUsage
 	shadesSubcmd.Usage = shadesUsage
 	paletteSubcmd.Usage = paletteUsage
+	menuSubcmd.Usage = menuUsage
 
 	setupFlags()
 
@@ -34,10 +36,38 @@ func ParseArgs() (*Conf, error) {
 	}
 
 	switch os.Args[1] {
+	case "menu":
+		e := menuSubcmd.Parse(os.Args[2:])
+		if e != nil {
+			fmt.Fprintf(os.Stderr, "error parsing menu subcommand: %v\n", e)
+		}
+
+		if isHelp {
+			menuSubcmd.Usage()
+			os.Exit(0)
+		}
+
+		if passedMenuConfigFile == "" {
+			return nil, fmt.Errorf("for \"%v\" subcommand [ -m | --menu-file ] flag is mandatory", os.Args[1])
+		}
+
+		if _, err := os.Stat(passedMenuConfigFile); err != nil || filepath.Ext(passedMenuConfigFile) != ".json" {
+			return nil, fmt.Errorf("passed config file does not exist or is not json")
+		}
+
+		return &Conf{
+			MenuConf: &MenuConf{
+				MenuConfPath: &passedMenuConfigFile,
+				Result:       &passedResult,
+				DefaultExec:  &passedDefaultExec,
+				IsJoin:       &isJoin,
+			},
+		}, nil
+
 	case "pick":
 		e := pickSubcmd.Parse(os.Args[2:])
 		if e != nil {
-			fmt.Fprintf(os.Stderr, "error parsing pick subcommand: %v\n", e)
+			return nil, fmt.Errorf("error parsing pick subcommand")
 		}
 
 		if isHelp {
@@ -59,7 +89,7 @@ func ParseArgs() (*Conf, error) {
 	case "shades":
 		e := shadesSubcmd.Parse(os.Args[2:])
 		if e != nil {
-			fmt.Fprintf(os.Stderr, "error parsing pick subcommand: %v\n", e)
+			return nil, fmt.Errorf("error parsing pick subcommand")
 		}
 
 		if isHelp {
@@ -85,7 +115,7 @@ func ParseArgs() (*Conf, error) {
 	case "palette":
 		e := paletteSubcmd.Parse(os.Args[2:])
 		if e != nil {
-			return nil, fmt.Errorf("error parsing palette subcommand: %w", e)
+			return nil, fmt.Errorf("error parsing palette subcommand")
 		}
 
 		if isHelp {
