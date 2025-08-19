@@ -46,7 +46,7 @@ type ClipManCommand struct {
 	Args []string
 }
 
-type MenuTask struct {
+type MenuEntry struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 	Icon  string `json:"icon"`

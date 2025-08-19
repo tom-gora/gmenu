@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"gmenu/cli"
 	"os"
@@ -11,72 +10,57 @@ import (
 	gcolors "gmenu/internal/gmenu_colors"
 )
 
-func handleMenu(conf *cli.MenuConf) {
-	f := conf.MenuConfPath
-
-	jsonData, err := os.ReadFile(*f)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading config file '%v': %v\n", f, err)
-		os.Exit(1)
-	}
-
-	var tasks []cli.MenuTask
-	if err := json.Unmarshal(jsonData, &tasks); err != nil {
-		fmt.Fprintf(os.Stderr, "Error unmarshaling JSON from '%v': %v\n", f, err)
-		os.Exit(1)
-	}
-
-	if *conf.Result == "" {
-		for _, task := range tasks {
-			if task.Name == "" {
-				continue
-			}
-
-			if *conf.IsJoin {
-				task.Name = fmt.Sprintf("%s %s", task.Value, task.Name)
-			}
-
-			icon := task.Icon
-			if icon == "" {
-				fmt.Printf("%s\n", task.Name)
-			} else {
-				fmt.Printf("%s\x00icon\x1f%s\n", task.Name, icon)
-			}
-		}
-		os.Exit(0)
-	} else {
-		selectedTaskName := *conf.Result
-
-		var selectedTask *cli.MenuTask
-		for i := range tasks {
-			if strings.Contains(selectedTaskName, tasks[i].Name) {
-				selectedTask = &tasks[i]
-				break
-			}
+func handleMenu(menuEntries []cli.MenuEntry, isJoin *bool) {
+	for _, menuEntry := range menuEntries {
+		if menuEntry.Name == "" {
+			continue
 		}
 
-		if selectedTask == nil {
-			fmt.Fprintf(os.Stderr, "Error: Task '%s' not found in config file. No command to execute.\n", selectedTaskName)
-			os.Exit(1)
+		if *isJoin {
+			menuEntry.Name = fmt.Sprintf("%s %s", menuEntry.Value, menuEntry.Name)
 		}
 
-		var commandToExecute string
-		if *conf.DefaultExec != "" {
-			commandToExecute = fmt.Sprintf("%s %s", *conf.DefaultExec, selectedTask.Value)
+		icon := menuEntry.Icon
+		if icon == "" {
+			fmt.Printf("%s\n", menuEntry.Name)
 		} else {
-			commandToExecute = selectedTask.Value
+			fmt.Printf("%s\x00icon\x1f%s\n", menuEntry.Name, icon)
 		}
-
-		cmd := exec.Command("bash", "-c", commandToExecute)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		err = cmd.Start()
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error starting command '%s': %v\n", commandToExecute, err)
-			os.Exit(1)
-		}
-		os.Exit(0)
 	}
+	os.Exit(0)
+}
+
+func handleMenuResult(result string, menuEntries []cli.MenuEntry, defaultExec *string) {
+	var selectedEntry *cli.MenuEntry
+
+	for i := range menuEntries {
+		if strings.Contains(result, menuEntries[i].Name) {
+			selectedEntry = &menuEntries[i]
+			break
+		}
+	}
+
+	if selectedEntry == nil {
+		fmt.Fprintf(os.Stderr, "Error: Task '%s' not found in config file. No command to execute.\n", result)
+		os.Exit(1)
+	}
+
+	var commandToExecute string
+	if *defaultExec != "" {
+		commandToExecute = fmt.Sprintf("%s %s", *defaultExec, selectedEntry.Value)
+	} else {
+		commandToExecute = selectedEntry.Value
+	}
+
+	cmd := exec.Command("bash", "-c", commandToExecute)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Start()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error starting command '%s': %v\n", commandToExecute, err)
+		os.Exit(1)
+	}
+	os.Exit(0)
 }
 
 func handlePick(conf *cli.PickConf) {
