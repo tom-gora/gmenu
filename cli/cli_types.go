@@ -10,10 +10,11 @@ type Conf struct {
 
 // MenuConf - config struct for menu subcommand
 type MenuConf struct {
-	MenuConfPath *string
+	MenuConfJSON *string
 	Result       *string
 	DefaultExec  *string
 	IsJoin       *bool
+	ReturnValue  *bool
 }
 
 // PickConf - config struct for pick subcommand
@@ -24,14 +25,16 @@ type PickConf struct {
 
 // ShadesConf - config struct for shades subcommand
 type ShadesConf struct {
-	Picker  *PickerCommand
-	ClipMan *ClipManCommand
+	UseClipMan *bool
+	Picker     *PickerCommand
+	ClipMan    *ClipManCommand
 }
 
 // PaletteConf - config struct for palette subcommand
 type PaletteConf struct {
-	Picker  *PickerCommand
-	ClipMan *ClipManCommand
+	UseClipMan *bool
+	Picker     *PickerCommand
+	ClipMan    *ClipManCommand
 }
 
 // PickerCommand - color picker command

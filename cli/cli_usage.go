@@ -14,17 +14,17 @@ func topLevelUsage() {
 	tbl := table.New("Subcommand", "Description")
 	tbl.WithHeaderFormatter(color.New(color.FgCyan).SprintfFunc())
 	tbl.AddRow("  menu", "Build arbitrary menu from config defined as json.")
-	tbl.AddRow("", "[ -m | --menu-file ] [ -r | --result ] [ -e | --default-exec ] [ -j | --join ] [ -h | --help ]")
+	tbl.AddRow("", "[ -m | --menu-config ] [ -r | --result ] [ -e | --default-exec ] [ -j | --join ] [ -V | --return-value ] [ -h | --help ]")
 	tbl.AddRow("", "")
 	tbl.AddRow("  pick", "Call color picker on the system to get a set of various formats for this color.")
 	tbl.AddRow(" ", "Outputs: hex, rgb, rgba, hsl, hsla, oklab, oklch, closest CSS named color (in RGB colorspace)", " ")
 	tbl.AddRow("", "[ -p | --picker-command ] [ -d | --draw-thumbnail ] [ -h | --help ]")
 	tbl.AddRow("", "")
 	tbl.AddRow("  shades", "Create shades of color coming either from picker or most recent stored in system clipboard manager.")
-	tbl.AddRow("", "[ -p | --picker-command ] [ -c | --clipman-command ] [ -h | --help ]")
+	tbl.AddRow("", "[ -p | --picker-command ] [ -c | --clipman-command ] [ -C | --use-clipboard ] [ -h | --help ]")
 	tbl.AddRow("", "")
 	tbl.AddRow("  palette", "Create a color palette from color coming either from picker or most recent stored in system clipboard manager.")
-	tbl.AddRow("", "[ -p | --picker-command ] [ -c | --clipman-command ] [ -h | --help ]")
+	tbl.AddRow("", "[ -p | --picker-command ] [ -c | --clipman-command ] [ -C | --use-clipboard ] [ -h | --help ]")
 
 	tbl.Print()
 }
@@ -48,6 +48,7 @@ func shadesUsage() {
 	tbl.AddRow("[ -h | --help            ]", "boolean", "Print this message.", "")
 	tbl.AddRow("[ -p | --picker-command  ]", "string", "Command to use to call picker that must return hex color value to stdout.", defaultPickerCmd)
 	tbl.AddRow("[ -c | --clipman-command ]", "string", "Command to use to retrieve clipboard history.", defaultClipCmd)
+	tbl.AddRow("[ -C | --use-clipboard   ]", "boolean", "Get last color from clipboard history rather than pick new one.", "")
 	tbl.Print()
 }
 
@@ -59,6 +60,7 @@ func paletteUsage() {
 	tbl.AddRow("[ -h | --help            ]", "boolean", "Print this message.", "")
 	tbl.AddRow("[ -p | --picker-command  ]", "string", "Command to use to call picker that must return hex color value to stdout.", defaultPickerCmd)
 	tbl.AddRow("[ -c | --clipman-command ]", "string", "Command to use to retrieve clipboard history.", defaultClipCmd)
+	tbl.AddRow("[ -C | --use-clipboard   ]", "boolean", "Get last color from clipboard history rather than pick new one.", "")
 	tbl.Print()
 }
 
@@ -68,9 +70,10 @@ func menuUsage() {
 	tbl := table.New("Flag", "Type", "Description", "Default")
 	tbl.WithHeaderFormatter(color.New(color.FgCyan).SprintfFunc())
 	tbl.AddRow("[ -h | --help          ]", "boolean", "Print this message.", "")
-	tbl.AddRow("[ -m | --menu-file     ]", "string", "Path to JSON file with menu configuration.", "")
-	tbl.AddRow("[ -r | --result        ]", "string", "Use this to pass result string from your fuzzy picker.", "")
+	tbl.AddRow("[ -m | --menu-config   ]", "string", "Path to JSON file with menu configuration or JSON as string.", "")
+	tbl.AddRow("[ -r | --result        ]", "string", "Use this to pass result string from your fuzzy picker to handle it.", "")
 	tbl.AddRow("[ -e | --default-exec  ]", "string", "Optionally pass command to prepend to result before running if it is the same in every case.", "wl-copy")
 	tbl.AddRow("[ -j | --join          ]", "boolean", "Join items with this string in the result file.", "")
+	tbl.AddRow("[ -V | --return-value  ]", "boolean", "Return value string instead of name string.", "")
 	tbl.Print()
 }

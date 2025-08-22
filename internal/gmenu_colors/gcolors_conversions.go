@@ -10,18 +10,6 @@ import (
 	"github.com/crazy3lf/colorconv"
 )
 
-type RGB struct {
-	R uint8
-	G uint8
-	B uint8
-}
-
-type HSL struct {
-	H float64
-	S float64
-	L float64
-}
-
 func radToDeg(rad float64) float64 {
 	return rad * (180 / math.Pi)
 }

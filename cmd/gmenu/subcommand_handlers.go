@@ -7,10 +7,11 @@ import (
 	"os/exec"
 	"strings"
 
+	u "gmenu/internal"
 	gcolors "gmenu/internal/gmenu_colors"
 )
 
-func handleMenu(menuEntries []cli.MenuEntry, isJoin *bool) {
+func handleMenu(menuEntries []cli.MenuEntry, isJoin *bool, returnValue *bool) {
 	for _, menuEntry := range menuEntries {
 		if menuEntry.Name == "" {
 			continue
@@ -18,6 +19,10 @@ func handleMenu(menuEntries []cli.MenuEntry, isJoin *bool) {
 
 		if *isJoin {
 			menuEntry.Name = fmt.Sprintf("%s %s", menuEntry.Value, menuEntry.Name)
+		}
+
+		if *returnValue {
+			menuEntry.Name = menuEntry.Value
 		}
 
 		icon := menuEntry.Icon
@@ -64,7 +69,7 @@ func handleMenuResult(result string, menuEntries []cli.MenuEntry, defaultExec *s
 }
 
 func handlePick(conf *cli.PickConf) {
-	colorStrings, err := gcolors.GatherColorStrings(*conf)
+	colorStrings, err := gcolors.GatherColorStringsFromPicker(*conf.Picker)
 	if err != nil {
 		fmt.Printf("Error collecting color strings: %v", err)
 		os.Exit(1)
@@ -76,6 +81,31 @@ func handlePick(conf *cli.PickConf) {
 			os.Exit(1)
 		}
 	}
+	u.PrintLines(colorStrings)
+}
 
-	gcolors.OutputAsLines(colorStrings)
+func handleShades(conf *cli.ShadesConf) {
+	var c string
+	var e error
+	if *conf.UseClipMan {
+		c, e = gcolors.GetLastColorFromClipboard()
+		if e != nil {
+			fmt.Printf("Error getting last color from clipboard: %v", e)
+			os.Exit(1)
+		}
+	} else {
+		c, e = gcolors.GetHexColorFromPicker(*conf.Picker)
+		if e != nil {
+			fmt.Printf("Error getting hex color from picker: %v", e)
+			os.Exit(1)
+		}
+	}
+
+	shadesStrings, err := gcolors.GetShadesStrings(c)
+	if err != nil {
+		fmt.Printf("Error getting shades strings: %v", err)
+		os.Exit(1)
+	}
+
+	u.PrintLines(shadesStrings)
 }

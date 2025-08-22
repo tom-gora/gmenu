@@ -5,34 +5,49 @@ import (
 	"gmenu/cli"
 	menu "gmenu/internal/gmenu_menu"
 	"os"
+	"reflect"
 )
 
 func main() {
-	conf, err := cli.ParseArgs()
+	confPtr, err := cli.ParseArgsToConf()
 	if err != nil {
 		fmt.Printf("An error parsing the command arguments occured:\n%v\n", err)
 		os.Exit(1)
 	}
 
 	switch {
-	case conf.MenuConf != nil && *conf.MenuConf.Result == "":
-		entries, err := menu.ReadJSONFile(conf.MenuConf.MenuConfPath)
+	// case no result been passed. act default-construct and output menu entries
+	case confPtr.MenuConf != nil &&
+		reflect.TypeOf(confPtr.MenuConf).Elem() == reflect.TypeOf(cli.MenuConf{}) &&
+		*confPtr.MenuConf.Result == "" &&
+		*confPtr.MenuConf.MenuConfJSON != "":
+		// ------------------------ conditions end
+		entries, err := menu.GetMenuEntriesFromJSON(confPtr.MenuConf.MenuConfJSON)
 		if err != nil {
-			fmt.Printf("An error reading the menu configuration file '%s':\n%v\n", *conf.MenuConf.MenuConfPath, err)
+			fmt.Printf("An error reading the menu configuration file '%s':\n%v\n", *confPtr.MenuConf.MenuConfJSON, err)
 			os.Exit(1)
 		}
-		handleMenu(entries, conf.MenuConf.IsJoin)
+		handleMenu(entries, confPtr.MenuConf.IsJoin, confPtr.MenuConf.ReturnValue)
 
-	case conf.MenuConf != nil && *conf.MenuConf.Result != "":
-		entries, err := menu.ReadJSONFile(conf.MenuConf.MenuConfPath)
+	// case result passed by flag. handle result by using adequate command to execute with result str
+	case confPtr.MenuConf != nil &&
+		reflect.TypeOf(confPtr.MenuConf).Elem() == reflect.TypeOf(cli.MenuConf{}) &&
+		*confPtr.MenuConf.Result != "" &&
+		*confPtr.MenuConf.MenuConfJSON != "":
+		// ------------------------ conditions end
+		entries, err := menu.GetMenuEntriesFromJSON(confPtr.MenuConf.MenuConfJSON)
 		if err != nil {
-			fmt.Printf("An error reading the menu configuration file '%s':\n%v\n", *conf.MenuConf.MenuConfPath, err)
+			fmt.Printf("An error reading the menu configuration file '%s':\n%v\n", *confPtr.MenuConf.MenuConfJSON, err)
 			os.Exit(1)
 		}
-		handleMenuResult(*conf.MenuConf.Result, entries, conf.MenuConf.DefaultExec)
+		handleMenuResult(*confPtr.MenuConf.Result, entries, confPtr.MenuConf.DefaultExec)
 
-	case conf.PickConf != nil:
+	// case pick color
+	case confPtr.PickConf != nil &&
+		reflect.TypeOf(confPtr.PickConf).Elem() == reflect.TypeOf(cli.PickConf{}):
+		handlePick(confPtr.PickConf)
 
-		handlePick(conf.PickConf)
+	case confPtr.ShadesConf != nil:
+		handleShades(confPtr.ShadesConf)
 	}
 }

@@ -20,7 +20,7 @@ func extractColor(line string, re *regexp.Regexp) string {
 }
 
 func GetLastColorFromClipboard() (string, error) {
-	cmdStr := "cliphist list | head -n50"
+	cmdStr := "cliphist list | head -n100"
 	cmd := exec.Command("sh", "-c", cmdStr)
 
 	output, _ := cmd.Output()

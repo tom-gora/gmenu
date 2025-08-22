@@ -10,18 +10,15 @@ import (
 	"github.com/alltom/oklab"
 )
 
-type ColorStrings struct {
-	HEX          string
-	RGB          string
-	RGBA         string
-	HSL          string
-	HSLA         string
-	OKLAB        string
-	OKLCH        string
-	ClosestNamed string
+func GetHexColorFromPicker(p cli.PickerCommand) (string, error) {
+	COLORhex, err := captureColorFromPicker(p)
+	if err != nil {
+		return "", err
+	}
+	return COLORhex, nil
 }
 
-func GatherColorStrings(p cli.PickConf) (ColorStrings, error) {
+func GatherColorStringsFromPicker(p cli.PickerCommand) (ColorStrings, error) {
 	COLORhex, err := captureColorFromPicker(p)
 	if err != nil {
 		return ColorStrings{}, err
@@ -86,7 +83,7 @@ func DrawTmpThumbnail(hex string) error {
 	return nil
 }
 
-func OutputAsLines(colorStrings ColorStrings) {
+func OutputLines(colorStrings ColorStrings) {
 	fmt.Printf("%v\n", colorStrings.HEX)
 	fmt.Printf("%v\n", colorStrings.RGB)
 	fmt.Printf("%v\n", colorStrings.RGBA)
@@ -96,10 +93,6 @@ func OutputAsLines(colorStrings ColorStrings) {
 	fmt.Printf("%v\n", colorStrings.OKLCH)
 	fmt.Printf("%v\n", colorStrings.ClosestNamed)
 }
-
-func outputAsJsonArr() {}
-
-func outputAsJsonObj() {}
 
 func OutputShadesAndTints(shadesAndTints []string) {
 	for _, v := range shadesAndTints {

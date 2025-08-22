@@ -6,7 +6,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/fatih/color"
@@ -19,7 +18,7 @@ var (
 	subcmdWarnFmt = color.New(color.FgYellow, color.Bold).SprintfFunc()
 )
 
-func ParseArgs() (*Conf, error) {
+func ParseArgsToConf() (*Conf, error) {
 	// assign usage functions
 	flag.Usage = topLevelUsage
 	pickSubcmd.Usage = pickUsage
@@ -47,20 +46,17 @@ func ParseArgs() (*Conf, error) {
 			os.Exit(0)
 		}
 
-		if passedMenuConfigFile == "" {
-			return nil, fmt.Errorf("for \"%v\" subcommand [ -m | --menu-file ] flag is mandatory", os.Args[1])
-		}
-
-		if _, err := os.Stat(passedMenuConfigFile); err != nil || filepath.Ext(passedMenuConfigFile) != ".json" {
-			return nil, fmt.Errorf("passed config file does not exist or is not json")
+		if passedMenuConfigJSON == "" {
+			return nil, fmt.Errorf("for \"%v\" subcommand [ -m | --menu-config ] flag is mandatory", os.Args[1])
 		}
 
 		return &Conf{
 			MenuConf: &MenuConf{
-				MenuConfPath: &passedMenuConfigFile,
+				MenuConfJSON: &passedMenuConfigJSON,
 				Result:       &passedResult,
 				DefaultExec:  &passedDefaultExec,
 				IsJoin:       &isJoin,
+				ReturnValue:  &returnValue,
 			},
 		}, nil
 
@@ -102,6 +98,7 @@ func ParseArgs() (*Conf, error) {
 
 		return &Conf{
 			ShadesConf: &ShadesConf{
+				UseClipMan: &useClipMan,
 				Picker: &PickerCommand{
 					Cmd:  pickerParts[0],
 					Args: pickerParts[1:],
@@ -128,6 +125,7 @@ func ParseArgs() (*Conf, error) {
 
 		return &Conf{
 			PaletteConf: &PaletteConf{
+				UseClipMan: &useClipMan,
 				Picker: &PickerCommand{
 					Cmd:  pickerParts[0],
 					Args: pickerParts[1:],
